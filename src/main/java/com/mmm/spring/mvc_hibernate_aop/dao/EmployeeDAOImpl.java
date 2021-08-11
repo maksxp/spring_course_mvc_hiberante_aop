@@ -17,7 +17,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
     private SessionFactory sessionFactory;
 
     @Override
-    @Transactional
+//    @Transactional // this annotation used here if we have NO service layer
     public List<Employee> getAllEmployees() {
         Session session = sessionFactory.getCurrentSession();
 //        //all in one statement
@@ -32,4 +32,23 @@ public class EmployeeDAOImpl implements EmployeeDAO{
                 .getResultList();
         return allEmployees;
     }
+
+    @Override
+    public void saveEmployee(Employee employee) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        //this method add new employee if id=0 and update exist employee in another case
+        session.saveOrUpdate(employee);
+    }
+
+    @Override
+    public Employee getEmployee(int id) {
+        Session session = sessionFactory.getCurrentSession();
+
+        Employee employee =session.get(Employee.class, id);
+        return employee;
+    }
+
+
 }
